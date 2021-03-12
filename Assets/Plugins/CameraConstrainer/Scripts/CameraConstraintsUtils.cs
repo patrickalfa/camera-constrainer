@@ -6,6 +6,8 @@ namespace Potreik.CameraConstrainer
 {
     public class CameraConstraintsUtils : MonoBehaviour
     {
+        public static Color GIZMOS_COLOR = new Color(1f, .5f, 0f);
+
         public static bool LineLine(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4)
         {
             float uA = ((p4.x - p3.x) * (p1.y - p3.y) - (p4.y - p3.y) * (p1.x - p3.x)) / ((p4.y - p3.y) * (p2.x - p1.x) - (p4.x - p3.x) * (p2.y - p1.y));

@@ -4,16 +4,28 @@ using UnityEngine;
 
 namespace Potreik.CameraConstrainer
 {
+    [ExecuteInEditMode]
     public class CameraConstraints : MonoBehaviour
     {
+        public Transform[] points {
+            get
+            {
+                Transform[] ret = new Transform[transform.childCount];
+                for (int i = 0; i < transform.childCount; i++)
+                    ret[i] = transform.GetChild(i);
+                
+                return ret;
+            }
+        }
+
         public GameObject CreatePoint()
         {
             int index = transform.childCount;
+            Transform lastPoint = transform.GetChild(transform.childCount - 1);
 
             GameObject point = new GameObject("Point" + index);
-
             point.transform.parent = transform;
-            point.transform.localPosition = Vector3.zero;
+            point.transform.localPosition = (lastPoint ? lastPoint.position : Vector3.zero);
 
             return point;
         }
@@ -42,21 +54,12 @@ namespace Potreik.CameraConstrainer
             return false;
         }
 
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
-            Gizmos.color = Color.cyan;
+            Gizmos.color = CameraConstraintsUtils.GIZMOS_COLOR;
 
-            int length = transform.childCount;
-            if (length > 1)
-            {
-                for (int i = 0; i < length - 1; i++)
-                {
-                    Gizmos.DrawLine(
-                        transform.GetChild(i).position,
-                        transform.GetChild(i + 1).position
-                    );
-                }
-            }
+            foreach (Transform point in transform)
+                Gizmos.DrawCube(point.position, Vector3.one * .25f);
         }
     }
 }
